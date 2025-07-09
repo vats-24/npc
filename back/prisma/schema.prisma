@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+model TopWallet {
+  id                Int       @id @default(autoincrement())
+  walletAddress     String    @unique @db.VarChar(44)
+  tokenMint         String    @db.VarChar(44)
+  tokenQuantity     BigInt
+  initialBalanceUi  Float
+  lastCheckedAt     DateTime  @default(now())
+  
+  @@map("top_wallets")
+}
+
+model Transaction {
+  id                Int       @id @default(autoincrement())
+  signature         String    @unique @db.VarChar(88)
+  timestamp         DateTime
+  transactionType   String    @db.VarChar(4) // 'BUY' or 'SELL'
+  tokenAmountUi     Float
+  solAmountUi       Float?
+  protocol          String?   @db.VarChar(50)
+  createdAt         DateTime  @default(now())
+
+  walletAddress     String    @db.VarChar(44)
+
+  @@index([walletAddress])
+  @@index([timestamp])
+  @@map("transactions") // Maps this model to the 'transactions' table
+}
