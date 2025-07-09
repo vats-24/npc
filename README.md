@@ -59,7 +59,7 @@ Follow these steps to get the entire TokenWise platform running locally.
 
 1.  **Clone the Project & Install Dependencies:**
     ```bash
-    git clone <your-repo-url>
+    git clone (https://github.com/vats-24/npc)
     cd back
     npm install
     ```
